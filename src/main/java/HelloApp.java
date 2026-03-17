@@ -1,7 +1,7 @@
 public class HelloApp {
     public static void main(String[] args) {
-        // UC3: Accept a name from command-line argument or use default "World"
-        String name = (args.length > 0) ? args[0] : "World";
-        System.out.println("Hello, " + name + "!");
+        // UC4: Accept multiple names as command-line arguments or use default "World"
+        String names = (args.length > 0) ? String.join(", ", args) : "World";
+        System.out.println("Hello, " + names + "!");
     }
 }
