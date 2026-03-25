@@ -352,3 +352,140 @@ Hello, Alice, Bob, Charlie!
 ## Next Steps
 Proceed to UC6 to read and process multiple names using substring to remove the trailing delimiter.
 
+---
+
+## UC6: Display "Hello" with Multiple Command-Line Arguments using substring to Remove Trailing Delimiter
+
+### Description
+The app accepts zero or more command-line arguments and prints a greeting. It uses an enhanced for loop to process multiple names and the `substring` method to remove the trailing delimiter. If no arguments are provided, it displays the default greeting: "Hello, World!".
+
+### Disadvantages of Previous Use Case
+UC5 used a conditional check (`if (nameBuilder.length() > 0)`) to avoid appending a leading delimiter. While functional, UC6 offers a cleaner alternative by appending the delimiter after every element uniformly, then using `substring()` to remove the trailing characters. This separates the construction phase from the cleanup phase, making the intent clearer.
+
+### Preconditions
+- Java 17 or higher is installed
+- HelloApp is compiled and ready to run
+- App is launched with zero or more command-line arguments
+
+### Main Flow
+1. User runs the application with names (or without names)
+2. App checks whether arguments are provided
+3. If no arguments are provided, app prints "Hello, World!"
+4. If arguments are provided, app iterates through `args` using an enhanced for loop
+5. App appends each name followed by `", "` to a `StringBuilder`
+6. App uses `substring()` to remove the trailing `", "`
+7. App prints the greeting: "Hello, `<names>`!"
+8. App terminates
+
+### Post Conditions
+- A greeting is displayed with all provided names separated by commas, or defaults to "Hello, World!" when no arguments are given
+
+### Hints
+1. Use `args.length == 0` to detect missing arguments
+2. Use `for (String name : args)` to iterate through all arguments
+3. Always append the same delimiter after each name, including the last one
+4. Use `substring(0, nameBuilder.length() - 2)` to remove the last two characters (`", "`)
+5. Check `nameBuilder.length() > 0` before calling `substring()` to avoid errors
+6. Test with 0, 1, and multiple arguments
+
+### Code Snippet Example
+
+```java
+public class HelloApp {
+    public static void main(String[] args) {
+        // UC6: Accept multiple names using enhanced for loop and substring to remove trailing delimiter
+        if (args.length == 0) {
+            System.out.println("Hello, World!");
+        } else {
+            StringBuilder nameBuilder = new StringBuilder();
+            for (String name : args) {
+                nameBuilder.append(name);
+                nameBuilder.append(", ");
+            }
+            String names = nameBuilder.substring(0, nameBuilder.length() - 2);
+            System.out.println("Hello, " + names + "!");
+        }
+    }
+}
+```
+
+### Example Output
+
+**Input with no arguments:**
+```bash
+java HelloApp
+```
+Output:
+```
+Hello, World!
+```
+
+**Input with one argument:**
+```bash
+java HelloApp Alice
+```
+Output:
+```
+Hello, Alice!
+```
+
+**Input with multiple arguments:**
+```bash
+java HelloApp Alice Bob Charlie
+```
+Output:
+```
+Hello, Alice, Bob, Charlie!
+```
+
+### Concepts Learned
+
+#### 1. **substring() Method**
+`substring(int beginIndex, int endIndex)` extracts a portion of a string from `beginIndex` (inclusive) to `endIndex` (exclusive). Using `substring(0, nameBuilder.length() - 2)` removes the final `", "` appended after the last name — a clean post-construction cleanup pattern.
+
+Breakdown of `nameBuilder.substring(0, nameBuilder.length() - 2)`:
+- `nameBuilder.length()` — total character count in the `StringBuilder`
+- `nameBuilder.length() - 2` — position just before the last `", "`
+- `substring(0, nameBuilder.length() - 2)` — extracts everything except the trailing delimiter
+
+#### 2. **String Immutability vs StringBuilder Mutability**
+Strings in Java are immutable — once created, they cannot be changed. `StringBuilder` is mutable and allows in-place modifications. Calling `substring()` on a `StringBuilder` returns a new `String` without modifying the original builder.
+
+#### 3. **Enhanced For Loop Simplicity**
+The `for (String name : args)` loop is cleaner than indexed loops when only element values (not indices) are needed. It eliminates boundary conditions and makes code more readable.
+
+#### 4. **StringBuilder Efficiency**
+`StringBuilder` avoids creating multiple intermediate `String` objects during concatenation. Each `append()` modifies the existing object in memory, making it more efficient than using `+` in a loop.
+
+#### 5. **Delimiter Handling Pattern**
+Appending the same delimiter after every element (uniformly) and then stripping it at the end is a common and readable pattern in Java — it avoids conditional checks inside the loop.
+
+#### 6. **Conditional Cleanup**
+Always check `nameBuilder.length() > 0` before calling `substring()` to prevent exceptions on empty strings. This is a key defensive programming practice.
+
+### Testing
+```bash
+mvn clean compile
+
+# Test with no arguments
+java -cp target/classes HelloApp
+
+# Test with one argument
+java -cp target/classes HelloApp Alice
+
+# Test with multiple arguments
+java -cp target/classes HelloApp Alice Bob Charlie
+```
+
+Expected Output:
+```
+Hello, World!
+Hello, Alice!
+Hello, Alice, Bob, Charlie!
+```
+
+---
+
+## Next Steps
+Proceed to UC7 to handle multiple names using the built-in `String.join()` method.
+

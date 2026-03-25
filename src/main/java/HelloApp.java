@@ -1,17 +1,16 @@
 public class HelloApp {
     public static void main(String[] args) {
-        // UC5: Accept multiple names using enhanced for loop or use default "World"
+        // UC6: Accept multiple names using enhanced for loop and substring to remove trailing delimiter
         if (args.length == 0) {
             System.out.println("Hello, World!");
         } else {
             StringBuilder nameBuilder = new StringBuilder();
             for (String name : args) {
-                if (nameBuilder.length() > 0) {
-                    nameBuilder.append(", ");
-                }
                 nameBuilder.append(name);
+                nameBuilder.append(", ");
             }
-            System.out.println("Hello, " + nameBuilder.toString() + "!");
+            String names = nameBuilder.substring(0, nameBuilder.length() - 2);
+            System.out.println("Hello, " + names + "!");
         }
     }
 }
