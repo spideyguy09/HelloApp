@@ -219,5 +219,136 @@ Hello, World!
 ---
 
 ## Next Steps
-Proceed to UC3 to support optional argument handling with a default greeting path.
+Proceed to UC5 to read a single name from standard input using an enhanced for loop.
+
+---
+
+## UC5: Display "Hello" with Multiple Command-Line Arguments using Enhanced For Loop or Default Message
+
+### Description
+The app accepts zero or more command-line arguments and prints a greeting. It uses an enhanced for loop (for-each loop) to process multiple names. If no arguments are provided, it displays the default greeting: "Hello, World!".
+
+### Disadvantages of Previous Use Case
+UC4 used a traditional indexed `for` loop (via `String.join`), which is more verbose for simple array iteration. For read-only traversal of all arguments, an enhanced for loop is cleaner and easier to maintain.
+
+### Preconditions
+- Java 17 or higher is installed
+- HelloApp is compiled and ready to run
+- App is launched with zero or more command-line arguments
+
+### Main Flow
+1. User runs the application with names (or without names)
+2. App checks whether arguments are provided
+3. If no arguments are provided, app prints "Hello, World!"
+4. If arguments are provided, app iterates through `args` using an enhanced for loop
+5. App builds a comma-separated list of names using `StringBuilder`
+6. App prints a single greeting: "Hello, `<names>`!"
+7. App terminates
+
+### Post Conditions
+- A greeting is displayed with all provided names, or defaults to "Hello, World!" when no arguments are given
+
+### Hints
+1. Use `args.length == 0` to detect missing arguments
+2. Use `for (String name : args)` to iterate through all arguments
+3. Use `StringBuilder` for efficient string construction
+4. Avoid trailing commas by appending delimiter conditionally
+5. Test with 0, 1, and multiple arguments
+
+### Code Snippet Example
+
+```java
+public class HelloApp {
+    public static void main(String[] args) {
+        // UC5: Accept multiple names using enhanced for loop or use default "World"
+        if (args.length == 0) {
+            System.out.println("Hello, World!");
+        } else {
+            StringBuilder nameBuilder = new StringBuilder();
+            for (String name : args) {
+                if (nameBuilder.length() > 0) {
+                    nameBuilder.append(", ");
+                }
+                nameBuilder.append(name);
+            }
+            System.out.println("Hello, " + nameBuilder.toString() + "!");
+        }
+    }
+}
+```
+
+### Example Output
+
+**Input with no arguments:**
+```bash
+java HelloApp
+```
+Output:
+```
+Hello, World!
+```
+
+**Input with one argument:**
+```bash
+java HelloApp Alice
+```
+Output:
+```
+Hello, Alice!
+```
+
+**Input with multiple arguments:**
+```bash
+java HelloApp Alice Bob Charlie
+```
+Output:
+```
+Hello, Alice, Bob, Charlie!
+```
+
+### Concepts Learned
+
+#### 1. **Enhanced For Loop (For-Each)**
+Cleaner iteration over array elements without index management. The syntax `for (String name : args)` automatically handles iteration bounds, making code more readable and less error-prone.
+
+#### 2. **Default Handling**
+Graceful behavior when input is missing ensures the program always produces valid output regardless of how it is invoked.
+
+#### 3. **Array Length Check**
+Using `args.length == 0` prevents invalid assumptions about input presence and is the foundation of safe argument handling.
+
+#### 4. **StringBuilder**
+`StringBuilder` is a mutable sequence of characters used for efficient string construction. Unlike the `+` operator which creates new `String` objects each time, `StringBuilder.append()` modifies the same object in place, reducing memory overhead.
+
+#### 5. **Conditional Delimiter Logic**
+Checking `nameBuilder.length() > 0` before appending `", "` ensures no leading comma appears in the output. This is the cleanest way to avoid trailing or leading delimiters when building comma-separated lists.
+
+#### 6. **Readable Control Flow**
+Separating the no-input and input-present paths into distinct `if-else` branches improves maintainability and makes the intent of each path immediately clear.
+
+### Testing
+```bash
+mvn clean compile
+
+# Test with no arguments
+java -cp target/classes HelloApp
+
+# Test with one argument
+java -cp target/classes HelloApp Alice
+
+# Test with multiple arguments
+java -cp target/classes HelloApp Alice Bob Charlie
+```
+
+Expected Output:
+```
+Hello, World!
+Hello, Alice!
+Hello, Alice, Bob, Charlie!
+```
+
+---
+
+## Next Steps
+Proceed to UC6 to read and process multiple names using substring to remove the trailing delimiter.
 
