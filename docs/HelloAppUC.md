@@ -489,3 +489,150 @@ Hello, Alice, Bob, Charlie!
 ## Next Steps
 Proceed to UC7 to handle multiple names using the built-in `String.join()` method.
 
+---
+
+## UC7: Display "Hello" with Multiple Command-Line Arguments using String.join() Method or Default Message
+
+### Description
+The app accepts zero or more command-line arguments and prints a greeting. It uses the `String.join()` method to efficiently concatenate multiple names with a specified delimiter. If no arguments are provided, it displays the default greeting: "Hello, World!".
+
+### Disadvantages of Previous Use Case
+UC6 used `substring()` to remove the trailing delimiter after constructing the string with a loop. While effective, this approach requires multiple steps: building the string, and then removing trailing characters. UC7 uses `String.join()`, a built-in Java utility that directly concatenates strings with a delimiter without requiring any manual loop or cleanup.
+
+### Preconditions
+- Java 17 or higher is installed
+- HelloApp is compiled and ready to run
+- App is launched with zero or more command-line arguments
+
+### Main Flow
+1. User runs the application with names (or without names)
+2. App checks whether arguments are provided
+3. If no arguments are provided, app uses `"World"` as the name text
+4. If arguments are provided, app uses `String.join(", ", args)` to concatenate all names
+5. App prints the greeting: "Hello, `<names>`!"
+6. App terminates
+
+### Post Conditions
+- A greeting is displayed with all provided names separated by commas, or defaults to "Hello, World!" when no arguments are given
+
+### Hints
+1. Use `args.length == 0` to detect missing arguments
+2. `String.join()` accepts a delimiter as the first parameter and an array or variable args as the second parameter
+3. `String.join()` automatically handles delimiter placement — no trailing delimiter is added
+4. A ternary operator makes this a single, readable line
+5. Test with 0, 1, and multiple arguments and compare readability with UC5 and UC6
+
+### Code Snippet Example
+
+```java
+public class HelloApp {
+    public static void main(String[] args) {
+        // UC7: Accept multiple names using String.join() method or use default "World"
+        String names = (args.length == 0) ? "World" : String.join(", ", args);
+        System.out.println("Hello, " + names + "!");
+    }
+}
+```
+
+### Example Output
+
+**Input with no arguments:**
+```bash
+java HelloApp
+```
+Output:
+```
+Hello, World!
+```
+
+**Input with one argument:**
+```bash
+java HelloApp Alice
+```
+Output:
+```
+Hello, Alice!
+```
+
+**Input with multiple arguments:**
+```bash
+java HelloApp Alice Bob Charlie
+```
+Output:
+```
+Hello, Alice, Bob, Charlie!
+```
+
+### Concepts Learned
+
+#### 1. **String.join() Method**
+`String.join(String delimiter, String... elements)` concatenates strings with a specified delimiter. It places the delimiter between elements only — no leading or trailing delimiter is ever added. It was introduced in Java 8 and is part of the `java.lang.String` class.
+
+In `String.join(", ", args)`:
+- `", "` — the delimiter placed between each name
+- `args` — the array of strings to join
+- Returns a single `String` with all names separated by commas and spaces
+
+#### 2. **Static Utility Methods**
+`String.join()` is a static method — it belongs to the `String` class and is called without creating a `String` instance. Static utility methods provide convenient functionality and improve code readability.
+
+#### 3. **Method Overloading**
+`String.join()` has two overloaded versions:
+- `String.join(String delimiter, String... elements)` — for variable arguments or arrays
+- `String.join(String delimiter, Iterable<? extends CharSequence> elements)` — for collections like `ArrayList`
+
+Both versions work the same way. This use case uses the first version with the `args` array.
+
+#### 4. **Ternary Operator**
+The ternary expression `(args.length == 0) ? "World" : String.join(", ", args)` compactly selects between two outcomes. It is equivalent to an `if-else` block but in a single expression, reducing code length significantly.
+
+#### 5. **No Trailing Delimiter**
+`String.join()` never appends a trailing delimiter, unlike the manual loop approaches in UC5 and UC6. This eliminates the need for conditional checks or post-construction cleanup.
+
+#### 6. **Comparison with Previous Approaches**
+| Use Case | Technique | Lines of Code |
+|----------|-----------|--------------|
+| UC5 | Enhanced for loop + conditional delimiter | ~16 |
+| UC6 | Enhanced for loop + substring cleanup | ~13 |
+| UC7 | String.join() + ternary | ~5 |
+
+`String.join()` achieves the same result with minimal code while being more readable and maintainable.
+
+#### 7. **Readability and Maintainability**
+`String.join(", ", args)` directly expresses the intent: "join these strings with this delimiter." This reduces cognitive load and makes the code immediately understandable without tracing loop logic.
+
+#### 8. **Performance**
+`String.join()` uses `StringBuilder` internally, so it is just as efficient as the manual `StringBuilder` approach in UC5 and UC6 — but with far cleaner syntax.
+
+### Testing
+```bash
+mvn clean compile
+
+# Test with no arguments
+java -cp target/classes HelloApp
+
+# Test with one argument
+java -cp target/classes HelloApp Alice
+
+# Test with multiple arguments
+java -cp target/classes HelloApp Alice Bob Charlie
+```
+
+Expected Output:
+```
+Hello, World!
+Hello, Alice!
+Hello, Alice, Bob, Charlie!
+```
+
+---
+
+## Conclusion
+
+Through the progression of UC5 to UC7, we explored three techniques for building comma-separated output from command-line arguments:
+
+- **UC5** — Enhanced for loop with conditional delimiter (readable, explicit control)
+- **UC6** — Enhanced for loop with `substring()` cleanup (clean post-construction pattern)
+- **UC7** — `String.join()` (most concise, leveraging Java's standard library)
+
+Each use case reduced the code further while introducing important Java concepts. UC7 demonstrates how built-in utility methods can replace manual loop logic entirely, resulting in cleaner, more maintainable code.
