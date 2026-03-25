@@ -1,7 +1,17 @@
 public class HelloApp {
     public static void main(String[] args) {
-        // UC4: Accept multiple names as command-line arguments or use default "World"
-        String names = (args.length > 0) ? String.join(", ", args) : "World";
-        System.out.println("Hello, " + names + "!");
+        // UC5: Accept multiple names using enhanced for loop or use default "World"
+        if (args.length == 0) {
+            System.out.println("Hello, World!");
+        } else {
+            StringBuilder nameBuilder = new StringBuilder();
+            for (String name : args) {
+                if (nameBuilder.length() > 0) {
+                    nameBuilder.append(", ");
+                }
+                nameBuilder.append(name);
+            }
+            System.out.println("Hello, " + nameBuilder.toString() + "!");
+        }
     }
 }
